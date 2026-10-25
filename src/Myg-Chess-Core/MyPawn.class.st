@@ -20,7 +20,9 @@ MyPawn >> renderPieceOn: aSquare [
 { #category : 'rendering' }
 MyPawn >> targetSquaresLegal: aBoolean [
 
-	| oneStep twoSteps startRank targets |
+	| oneStep twoSteps startRank diagonals targets |
+	"Les blancs montent, les noirs descendent. On garde la case devant,
+	la rangée de départ et les deux cases en diagonale devant le pion."
 	self isWhite
 		ifTrue: [
 			oneStep := square up.
@@ -28,14 +30,28 @@ MyPawn >> targetSquaresLegal: aBoolean [
 		ifFalse: [
 			oneStep := square down.
 			startRank := $7 ].
+	diagonals := {
+		             (oneStep ifNotNil: #left).
+		             (oneStep ifNotNil: #right) }.
+
 	targets := OrderedCollection new.
-	(oneStep notNil and: [ oneStep hasPiece not ]) ifFalse: [ ^ targets ].
-	targets add: oneStep.
-	square file = startRank ifTrue: [
-		twoSteps := self isWhite
-			            ifTrue: [ oneStep up ]
-			            ifFalse: [ oneStep down ].
-		(twoSteps notNil and: [ twoSteps hasPiece not ]) ifTrue: [
-			targets add: twoSteps ] ].
+
+	"Avancer : seulement si la case devant existe et est vide."
+	(oneStep notNil and: [ oneStep hasPiece not ]) ifTrue: [
+		targets add: oneStep.
+		"Deux cases : seulement depuis la rangée de départ, si la case suivante est vide."
+		square file = startRank ifTrue: [
+			twoSteps := self isWhite
+				            ifTrue: [ oneStep up ]
+				            ifFalse: [ oneStep down ].
+			(twoSteps notNil and: [ twoSteps hasPiece not ]) ifTrue: [
+				targets add: twoSteps ] ] ].
+
+	"Capturer : seulement en diagonale, sur une pièce de l'adversaire."
+	diagonals do: [ :diagonal |
+		(diagonal notNil and: [
+			 diagonal hasPiece and: [ diagonal contents color ~= color ] ])
+			ifTrue: [ targets add: diagonal ] ].
+
 	^ targets
 ]
