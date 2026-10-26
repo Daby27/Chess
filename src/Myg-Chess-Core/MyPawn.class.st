@@ -11,6 +11,26 @@ MyPawn >> id [
 	^ 'P'
 ]
 
+{ #category : 'path commands' }
+MyPawn >> moveTo: aSquare [
+
+	super moveTo: aSquare.
+	(square == aSquare and: [
+		 aSquare file = (self isWhite ifTrue: [ $8 ] ifFalse: [ $1 ]) ])
+		ifTrue: [ self promoteOn: aSquare ]
+]
+
+{ #category : 'as yet unclassified' }
+MyPawn >> promoteOn: aSquare [
+
+	| queen |
+	queen := self isWhite
+		         ifTrue: [ MyQueen white ]
+		         ifFalse: [ MyQueen black ].
+	queen square: aSquare.
+	aSquare contents: queen
+]
+
 { #category : 'rendering' }
 MyPawn >> renderPieceOn: aSquare [ 
 	
