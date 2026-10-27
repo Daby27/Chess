@@ -199,86 +199,51 @@ MyChessSquare >> printOn: aStream [
 ]
 
 { #category : 'rendering' }
+MyChessSquare >> render: aPiece whiteLetter: aWhiteLetter blackLetter: aBlackLetter [
+
+	| letter |
+	letter := aPiece isWhite
+		          ifTrue: [ aWhiteLetter ]
+		          ifFalse: [ aBlackLetter ].
+	^ color isBlack
+		  ifTrue: [ letter asLowercase ]
+		  ifFalse: [ letter ]
+]
+
+{ #category : 'rendering' }
 MyChessSquare >> renderBishop: aPiece [
 
-	^ aPiece isWhite
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'B' ]
-				  ifTrue: [ 'b' ] ]
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'V' ]
-				  ifTrue: [ 'v' ] ]
+	^ self render: aPiece whiteLetter: 'B' blackLetter: 'V'
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderKing: aPiece [
 
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'L' ]
-				  ifTrue: [ 'l' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'K' ]
-				  ifTrue: [ 'k' ] ]
+	^ self render: aPiece whiteLetter: 'K' blackLetter: 'L'
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderKnight: aPiece [
 
-	^ aPiece isWhite
-		  ifFalse: [ color isBlack
-				  ifFalse: [ 'M' ]
-				  ifTrue: [ 'm' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'N' ]
-				  ifTrue: [ 'n' ] ]
+	^ self render: aPiece whiteLetter: 'N' blackLetter: 'M'
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderPawn: aPiece [
 
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'O' ]
-				  ifTrue: [ 'o' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'P' ]
-				  ifTrue: [ 'p' ] ]
+	^ self render: aPiece whiteLetter: 'P' blackLetter: 'O'
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderQueen: aPiece [
 
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'W' ]
-				  ifTrue: [ 'w' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'Q' ]
-				  ifTrue: [ 'q' ] ]
+	^ self render: aPiece whiteLetter: 'Q' blackLetter: 'W'
 ]
 
 { #category : 'rendering' }
 MyChessSquare >> renderRook: aPiece [
 
-	^ aPiece isWhite
-		  ifFalse: [
-			  color isBlack
-				  ifFalse: [ 'T' ]
-				  ifTrue: [ 't' ] ]
-		  ifTrue: [
-			  color isBlack
-				  ifFalse: [ 'R' ]
-				  ifTrue: [ 'r' ] ]
+	^ self render: aPiece whiteLetter: 'R' blackLetter: 'T'
 ]
 
 { #category : 'accessing' }
