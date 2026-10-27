@@ -6,6 +6,19 @@ Class {
 }
 
 { #category : 'tests' }
+MyPawnTests >> testBlackPawnBecomesQueenOnLastRank [
+
+	| pawn board |
+	board := MyChessBoard empty.
+	board at: 'e2' put: (pawn := MyPawn black).
+
+	pawn moveTo: (board at: 'e1').
+
+	self assert: (board at: 'e1') contents class equals: MyQueen.
+	self deny: (board at: 'e1') contents isWhite
+]
+
+{ #category : 'tests' }
 MyPawnTests >> testBlockedPawnCannotAdvance [
 
 	| pawn board |
@@ -72,4 +85,29 @@ MyPawnTests >> testPawnEatsDiagonally [
 				(board at: 'e5').
 				(board at: 'd5').
 				(board at: 'f5') }
+]
+
+{ #category : 'tests' }
+MyPawnTests >> testPawnIsNotPromotedBeforeLastRank [
+
+	| pawn board |
+	board := MyChessBoard empty.
+	board at: 'e4' put: (pawn := MyPawn white).
+
+	pawn moveTo: (board at: 'e5').
+
+	self assert: (board at: 'e5') contents class equals: MyPawn
+]
+
+{ #category : 'tests' }
+MyPawnTests >> testWhitePawnBecomesQueenOnLastRank [
+
+	| pawn board |
+	board := MyChessBoard empty.
+	board at: 'e7' put: (pawn := MyPawn white).
+
+	pawn moveTo: (board at: 'e8').
+
+	self assert: (board at: 'e8') contents class equals: MyQueen.
+	self assert: (board at: 'e8') contents isWhite
 ]
